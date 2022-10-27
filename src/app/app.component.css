@@ -1,0 +1,10 @@
+.chart {
+  width: 100%;
+  min-height: 560px;
+}
+
+.badge {
+  height: 100%;
+  width: 14px;
+  display: inline-block;
+}

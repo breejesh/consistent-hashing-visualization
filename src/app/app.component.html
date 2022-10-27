@@ -1,0 +1,24 @@
+<div class="container">
+  <h3 class="text-center mt-3">Consistent Hashing Visualization</h3>
+  <p class="text-center mt-3">Ring Size: {{ ringSize }}, &nbsp;Server Limit: {{serverLimit}}, &nbsp;Replication Factor: {{ virtualNodeFactor }}</p>
+  <div>
+    <google-chart class="chart" #chart
+      [type]="type"
+      [data]="data"
+      [columns]="columnNames"
+      [options]="options">
+    </google-chart>
+  </div>
+  <div class="d-flex flex-row align-items-center justify-content-center">
+    <button type="button" class="btn btn-success mx-2" (click)="addServer()">Add Server</button>
+    <button type="button" class="btn btn-danger mx-2" (click)="removeServer()">Remove Server</button>
+  </div>
+  <div class="d-flex flex-row align-items-center justify-content-center mt-4">
+    <div>
+      <div *ngFor="let server of servers; let i = index">
+        <h6> <span class="badge" [ngStyle]="{'background': colors[i]}"></span> {{ server }} :
+          <span title="{{serverRingMap[server]}}"> {{serverRingMap[server].length}} Slots </span></h6>
+      </div>
+    </div>
+  </div>
+</div>
