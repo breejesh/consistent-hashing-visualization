@@ -75,7 +75,6 @@ export class AppComponent implements OnInit {
 
   removeServer() {
     this.servers.pop();
-    console.log(this.servers);
     this.updateChart();
   }
 
@@ -89,7 +88,6 @@ export class AppComponent implements OnInit {
         ringMapping[ringVal] = this.servers[i];
       }
     }
-    console.log(ringMapping);
 
     let mappedIndices = Object.keys(ringMapping).map((val) => Number(val));
     mappedIndices.sort((a, b) => a - b);
