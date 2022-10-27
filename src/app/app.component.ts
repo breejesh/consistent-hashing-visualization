@@ -17,15 +17,15 @@ export class AppComponent implements OnInit {
   virtualNodeFactor: number = 4;
 
   type = ChartType.PieChart;
-  data = [['R0', 1]];
-  columnNames = ['', ''];
+  data = [['R0', 1, 'Ring Slot 0']];
+  columnNames = ['', '', { role: 'tooltip', type: 'string' }];
   options = {
     slices: { 0: { color: 'grey' }, 2: { color: 'grey' } },
     pieHole: 0.8,
     legend: 'none',
     pieSliceText: 'none',
     backgroundColor: '#333',
-    pieSliceBorderColor: 'transparent'
+    pieSliceBorderColor: 'transparent',
   };
 
   colors = ['#2196F3', '#FF5722', '#673AB7', '#009688', '#E91E63', '#FFEB3B'];
@@ -40,7 +40,11 @@ export class AppComponent implements OnInit {
     const slicesRes: any = {};
 
     for (let i = 0; i < this.ringSize; i++) {
-      dataRes.push(['Ring ' + i, 1]);
+      dataRes.push([
+        'Ring ' + i,
+        1,
+        'Ring Slot ' + i + ' \n(No Servers Active)',
+      ]);
       slicesRes[i.toString()] = { color: 'grey' };
     }
     this.data = dataRes;
@@ -50,15 +54,27 @@ export class AppComponent implements OnInit {
   updateChart() {
     this.mapRingsToServers();
     const slicesRes: any = {};
+    const dataRes = [];
     for (let i = 0; i < this.ringSize; i++) {
       if (this.ringServerList[i] && this.ringServerList[i].split(' ')[1]) {
+        dataRes.push([
+          'Ring ' + i,
+          1,
+          'Ring Slot ' + i + ' \n(Mapped to ' + this.ringServerList[i] + ')',
+        ]);
         slicesRes[i.toString()] = {
           color: this.colors[Number(this.ringServerList[i].split(' ')[1])],
         };
       } else {
+        dataRes.push([
+          'Ring ' + i,
+          1,
+          'Ring Slot ' + i + ' \n(No Servers Active)',
+        ]);
         slicesRes[i.toString()] = { color: 'grey' };
       }
     }
+    this.data = dataRes;
     this.options.slices = slicesRes;
     this.data = Object.assign([], this.data);
     this.options = Object.assign([], this.options);
@@ -100,10 +116,10 @@ export class AppComponent implements OnInit {
     for (let i = 0; i < this.ringSize; i++) {
       if (mappedIndices[mappedIndexCount] < i) {
         mappedIndexCount++;
-        if(mappedIndexCount >= mappedIndices.length) {
+        if (mappedIndexCount >= mappedIndices.length) {
           reachedEnd = true;
         }
-        if(reachedEnd) {
+        if (reachedEnd) {
           mappedIndexCount = 0;
         }
       }
@@ -113,7 +129,6 @@ export class AppComponent implements OnInit {
       }
       this.serverRingMap[this.ringServerList[i]].push(i);
     }
-
   }
 
   stringHash(input: string) {
